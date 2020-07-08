@@ -19,9 +19,14 @@ suite('Functional Tests', function () {
       test('add a new thread', function (done) {
         chai.request(server)
           .post('/api/threads/test')
+          .type('form')
+          .send({
+            'text': 'thread text',
+            'delete_password': 'thread password'
+          })
           .end(function (err, res) {
             assert.equal(err, null)
-            assert.equal(res.status, 200)
+            assert.match(res.redirects, /\/b\/test\/$/)
             done()
           })
       })

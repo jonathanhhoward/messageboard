@@ -3,5 +3,5 @@ module.exports = {
 }
 
 async function addNewThread (req, res) {
-  res.end()
+  res.redirect(`/b/${req.params.board}/`)
 }
