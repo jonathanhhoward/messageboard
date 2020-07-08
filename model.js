@@ -4,9 +4,9 @@ let now = Date.now()
 const threadSchema = new db.Schema({
   text: { type: String, required: true },
   created_on: { type: Date, default: now },
-  bumped_on: { type: Date, default: now},
-  reported: {type: Boolean, default: false},
-  delete_password: {type: String, required: true},
+  bumped_on: { type: Date, default: now },
+  reported: { type: Boolean, default: false },
+  delete_password: { type: String, required: true },
   replies: []
 })
 
@@ -24,5 +24,8 @@ async function create (collection, fields) {
 }
 
 async function listRecent (collection) {
-  return await Thread(collection).find({}, 'text created_on bumped_on replies')
+  return await Thread(collection).find({})
+    .select('text created_on bumped_on replies')
+    .sort({ bumped_on: -1 })
+    .limit(10)
 }

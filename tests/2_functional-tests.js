@@ -43,8 +43,17 @@ suite('Functional Tests', function () {
             assert.equal(res.status, 200)
 
             assert.isArray(res.body)
+            assert.isAtMost(res.body.length, 10)
+            if (res.body.length > 1) {
+              assert.isBelow(
+                Date.parse(res.body[1].bumped_on),
+                Date.parse(res.body[0].bumped_on)
+              )
+            }
+
             assert.isObject(res.body[0])
             assert.hasAllKeys(res.body[0], ['_id', 'text', 'created_on', 'bumped_on', 'replies'])
+
             done()
           })
       })
