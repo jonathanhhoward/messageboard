@@ -18,5 +18,6 @@ router.route('/threads/:board')
 
 router.route('/replies/:board')
   .post(api.addNewReply)
+  .get(api.getThread)
 
 module.exports = router

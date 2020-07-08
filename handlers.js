@@ -3,7 +3,8 @@ const Thread = require('./model')
 module.exports = {
   addNewThread,
   listRecentThreads,
-  addNewReply
+  addNewReply,
+  getThread
 }
 
 async function addNewThread (req, res) {
@@ -17,5 +18,14 @@ async function listRecentThreads (req, res) {
 }
 
 async function addNewReply (req, res) {
-  res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)
+  const board = req.params.board
+  const { thread_id, text, delete_password } = req.body
+  const fields = { text, delete_password }
+  await Thread.createReply(board, thread_id, fields)
+  res.redirect(`/b/${board}/${thread_id}`)
+}
+
+async function getThread (req, res) {
+  const thread = await Thread.get(req.params.board, req.query.thread_id)
+  res.json(thread)
 }

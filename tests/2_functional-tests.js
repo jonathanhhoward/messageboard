@@ -14,6 +14,7 @@ const assert = chai.assert
 chai.use(chaiHttp)
 
 const THREADS_ROUTE = '/api/threads/test'
+const REPLIES_ROUTE = '/api/replies/test'
 
 suite('Functional Tests', function () {
   suite('API ROUTING FOR /api/threads/:board', function () {
@@ -77,7 +78,7 @@ suite('Functional Tests', function () {
             assert.equal(errOut, null)
             const path = new RegExp(`/b/test/${resOut.body[0]._id}`)
             chai.request(server)
-              .post('/api/replies/test')
+              .post(REPLIES_ROUTE)
               .type('form')
               .send({
                 'thread_id': resOut.body[0]._id,
@@ -94,7 +95,35 @@ suite('Functional Tests', function () {
     })
 
     suite('GET', function () {
+      test('get a thread', function (done) {
+        chai.request(server)
+          .get(THREADS_ROUTE)
+          .end(function (errOut, resOut) {
+            assert.equal(errOut, null)
+            chai.request(server)
+              .get(REPLIES_ROUTE)
+              .query({ thread_id: resOut.body[0]._id })
+              .end(function (errIn, resIn) {
+                assert.equal(errIn, null)
+                assert.equal(resIn.status, 200)
 
+                assert.isObject(resIn.body)
+                assert.hasAllKeys(resIn.body, ['_id', 'text', 'created_on', 'bumped_on', 'replies'])
+
+                assert.isArray(resIn.body.replies)
+                if (resIn.body.replies.length) {
+                  assert.isAbove(
+                    Date.parse(resIn.body.bumped_on),
+                    Date.parse(resIn.body.created_on)
+                  )
+                }
+
+                assert.isObject(resIn.body.replies[0])
+                assert.hasAllKeys(resIn.body.replies[0], ['_id', 'text', 'created_on'])
+                done()
+              })
+          })
+      })
     })
 
     suite('PUT', function () {
