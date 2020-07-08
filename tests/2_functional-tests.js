@@ -28,7 +28,7 @@ suite('Functional Tests', function () {
           })
           .end(function (err, res) {
             assert.equal(err, null)
-            assert.match(res.redirects, /\/b\/test\/$/)
+            assert.match(res.redirects[0], /\/b\/test\/$/)
             done()
           })
       })
@@ -70,7 +70,27 @@ suite('Functional Tests', function () {
 
   suite('API ROUTING FOR /api/replies/:board', function () {
     suite('POST', function () {
-
+      test('add a new reply', function (done) {
+        chai.request(server)
+          .get(THREADS_ROUTE)
+          .end(function (errOut, resOut) {
+            assert.equal(errOut, null)
+            const path = new RegExp(`/b/test/${resOut.body[0]._id}`)
+            chai.request(server)
+              .post('/api/replies/test')
+              .type('form')
+              .send({
+                'thread_id': resOut.body[0]._id,
+                'text': 'reply text',
+                'delete_password': 'reply password'
+              })
+              .end(function (errIn, resIn) {
+                assert.equal(errIn, null)
+                assert.match(resIn.redirects[0], path)
+                done()
+              })
+          })
+      })
     })
 
     suite('GET', function () {

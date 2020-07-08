@@ -17,5 +17,6 @@ router.route('/threads/:board')
   .get(api.listRecentThreads)
 
 router.route('/replies/:board')
+  .post(api.addNewReply)
 
 module.exports = router

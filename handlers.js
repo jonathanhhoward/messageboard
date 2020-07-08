@@ -2,7 +2,8 @@ const Thread = require('./model')
 
 module.exports = {
   addNewThread,
-  listRecentThreads
+  listRecentThreads,
+  addNewReply
 }
 
 async function addNewThread (req, res) {
@@ -13,4 +14,8 @@ async function addNewThread (req, res) {
 async function listRecentThreads (req, res) {
   const threads = await Thread.listRecent(req.params.board)
   res.json(threads)
+}
+
+async function addNewReply (req, res) {
+  res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)
 }
