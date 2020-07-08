@@ -16,7 +16,15 @@ chai.use(chaiHttp)
 suite('Functional Tests', function () {
   suite('API ROUTING FOR /api/threads/:board', function () {
     suite('POST', function () {
-
+      test('add a new thread', function (done) {
+        chai.request(server)
+          .post('/api/threads/test')
+          .end(function (err, res) {
+            assert.equal(err, null)
+            assert.equal(res.status, 200)
+            done()
+          })
+      })
     })
 
     suite('GET', function () {
