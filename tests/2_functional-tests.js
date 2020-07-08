@@ -33,7 +33,15 @@ suite('Functional Tests', function () {
     })
 
     suite('GET', function () {
-
+      test('list recent threads', function (done) {
+        chai.request(server)
+          .get('/api/threads/text')
+          .end(function (err, res) {
+            assert.equal(err, null)
+            assert.equal(res.status, 200)
+            done()
+          })
+      })
     })
 
     suite('DELETE', function () {
