@@ -11,6 +11,11 @@ const apiRoutes = require('./routes/api-routes.js')
 const fccTestingRoutes = require('./routes/fcctesting.js')
 const runner = require('./test-runner')
 
+const db = require('./db')
+const connection = db.connection
+connection.on('error', console.error.bind(console.error, 'connection error:'))
+connection.once('open', () => console.log('MongoDB connected'))
+
 const app = express()
 
 app.use(helmet({
@@ -29,7 +34,7 @@ app.get('/b/:board/', (req, res) => res.sendFile(`${process.cwd()}/views/board.h
 app.get('/b/:board/:threadid', (req, res) => res.sendFile(`${process.cwd()}/views/thread.html`))
 
 //Index page (static HTML)
-app.get('/', (req, res) => res.sendFile(`${process.cwd()}/views/index.html`))
+app.get('/', (req, res) => {res.sendFile(process.cwd() + '/views/index.html')})
 
 //For FCC testing purposes
 fccTestingRoutes(app)
