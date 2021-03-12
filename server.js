@@ -11,8 +11,7 @@ const apiRoutes = require("./routes/api-routes.js");
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner");
 
-const db = require("./db");
-const connection = db.connection;
+const { connection } = require("./db");
 connection.on("error", console.error.bind(console.error, "connection error:"));
 connection.once("open", () => console.log("MongoDB connected"));
 
