@@ -36,7 +36,7 @@ async function create(collection, fields) {
 }
 
 async function listRecent(collection) {
-  return await Thread(collection)
+  return Thread(collection)
     .find({})
     .select(
       "text created_on bumped_on replies._id replies.text replies.created_on"
@@ -53,7 +53,7 @@ async function createReply(collection, id, fields) {
 }
 
 async function get(collection, id) {
-  return await Thread(collection)
+  return Thread(collection)
     .findById(id)
     .select(
       "text created_on bumped_on replies._id replies.text replies.created_on"
