@@ -35,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/jonathanhhoward/messageboard/issues"
   },
-  "homepage": "https://github.com/jonathanhhoward/messageboard#readme"
+  "homepage": "https://github.com/jonathanhhoward/messageboard#readme",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
 }
