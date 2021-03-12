@@ -1,23 +1,22 @@
 /*
-*
-*
-*       Complete the API routing below
-*
-*
-*/
+ *
+ *
+ *       Complete the API routing below
+ *
+ *
+ */
 
-'use strict'
+"use strict";
 
-const api = require('../handlers')
+const api = require("../handlers");
 
-const router = require('express').Router()
+const router = require("express").Router();
 
-router.route('/threads/:board')
+router
+  .route("/threads/:board")
   .post(api.addNewThread)
-  .get(api.listRecentThreads)
+  .get(api.listRecentThreads);
 
-router.route('/replies/:board')
-  .post(api.addNewReply)
-  .get(api.getThread)
+router.route("/replies/:board").post(api.addNewReply).get(api.getThread);
 
-module.exports = router
+module.exports = router;
