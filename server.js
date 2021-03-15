@@ -13,7 +13,7 @@ const runner = require("./test-runner");
 
 const { connection } = require("./db");
 connection.on("error", console.error.bind(console.error, "connection error:"));
-connection.once("open", () => console.log("MongoDB connected"));
+connection.once("open", () => console.log("MongoDB connection open"));
 
 const app = express();
 
