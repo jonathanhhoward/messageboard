@@ -11,10 +11,6 @@ const apiRoutes = require("./routes/api-routes.js");
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner");
 
-const { connection } = require("./db");
-connection.on("error", console.error.bind(console.error, "connection error:"));
-connection.once("open", () => console.log("MongoDB connection open"));
-
 const app = express();
 
 app.use(helmet.dnsPrefetchControl());
