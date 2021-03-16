@@ -21,6 +21,7 @@ const threadSchema = new db.Schema({
 });
 
 module.exports = {
+  threadSchema,
   create,
   listRecent,
   createReply,
