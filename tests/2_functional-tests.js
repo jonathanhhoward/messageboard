@@ -70,24 +70,17 @@ suite("Functional Tests", function () {
       test("add a new reply", function (done) {
         chai
           .request(server)
-          .get(THREADS_ROUTE)
-          .end(function (errOut, resOut) {
-            assert.equal(errOut, null);
-            const path = new RegExp(`/b/test/${resOut.body[0]._id}`);
-            chai
-              .request(server)
-              .post(REPLIES_ROUTE)
-              .type("form")
-              .send({
-                thread_id: resOut.body[0]._id,
-                text: "reply text",
-                delete_password: "reply password",
-              })
-              .end(function (errIn, resIn) {
-                assert.equal(errIn, null);
-                assert.match(resIn.redirects[0], path);
-                done();
-              });
+          .post(REPLIES_ROUTE)
+          .type("form")
+          .send({
+            thread_id: "t1",
+            text: "reply text",
+            delete_password: "reply password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.match(res.redirects[0], /\/b\/test\/t1/);
+            done();
           });
       });
     });
@@ -96,42 +89,36 @@ suite("Functional Tests", function () {
       test("get a thread", function (done) {
         chai
           .request(server)
-          .get(THREADS_ROUTE)
-          .end(function (errOut, resOut) {
-            assert.equal(errOut, null);
-            chai
-              .request(server)
-              .get(REPLIES_ROUTE)
-              .query({ thread_id: resOut.body[0]._id })
-              .end(function (errIn, resIn) {
-                assert.equal(errIn, null);
-                assert.equal(resIn.status, 200);
+          .get(REPLIES_ROUTE)
+          .query({ thread_id: "t1" })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 200);
 
-                assert.isObject(resIn.body);
-                assert.hasAllKeys(resIn.body, [
-                  "_id",
-                  "text",
-                  "created_on",
-                  "bumped_on",
-                  "replies",
-                ]);
+            assert.isObject(res.body);
+            assert.hasAllKeys(res.body, [
+              "_id",
+              "text",
+              "created_on",
+              "bumped_on",
+              "replies",
+            ]);
 
-                assert.isArray(resIn.body.replies);
-                if (resIn.body.replies.length) {
-                  assert.isAbove(
-                    Date.parse(resIn.body.bumped_on),
-                    Date.parse(resIn.body.created_on)
-                  );
-                }
+            assert.isArray(res.body.replies);
+            if (res.body.replies.length) {
+              assert.isAbove(
+                Date.parse(res.body.bumped_on),
+                Date.parse(res.body.created_on)
+              );
+            }
 
-                assert.isObject(resIn.body.replies[0]);
-                assert.hasAllKeys(resIn.body.replies[0], [
-                  "_id",
-                  "text",
-                  "created_on",
-                ]);
-                done();
-              });
+            assert.isObject(res.body.replies[0]);
+            assert.hasAllKeys(res.body.replies[0], [
+              "_id",
+              "text",
+              "created_on",
+            ]);
+            done();
           });
       });
     });
