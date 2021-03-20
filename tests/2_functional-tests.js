@@ -39,13 +39,11 @@ suite("Functional Tests", function () {
 
             assert.isArray(res.body);
             assert.isAtMost(res.body.length, 10);
-            if (res.body.length > 1) {
-              for (let i = 0; i < res.body.length - 1; ++i) {
-                assert.isBelow(
-                  Date.parse(res.body[i + 1].bumped_on),
-                  Date.parse(res.body[i].bumped_on)
-                );
-              }
+            for (let i = 0; i < res.body.length - 1; ++i) {
+              assert.isBelow(
+                Date.parse(res.body[i + 1].bumped_on),
+                Date.parse(res.body[i].bumped_on)
+              );
             }
 
             assert.isObject(res.body[0]);
