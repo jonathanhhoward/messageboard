@@ -17,10 +17,11 @@ const threadSchema = new db.Schema({
   bumped_on: { type: Date, default: now },
   reported: { type: Boolean, default: false },
   delete_password: { type: String, required: true },
-  replies: [repliesSchema],
+  replies: [{ type: String, ref: "Reply" }],
 });
 
 module.exports = {
+  repliesSchema,
   threadSchema,
   create,
   listRecent,
@@ -28,8 +29,12 @@ module.exports = {
   get,
 };
 
+function Reply(collection) {
+  return db.model("Reply", repliesSchema, collection + "Replies");
+}
+
 function Thread(collection) {
-  return db.model("Thread", threadSchema, collection);
+  return db.model("Thread", threadSchema, collection + "Threads");
 }
 
 async function create(collection, fields) {
@@ -47,8 +52,9 @@ async function listRecent(collection) {
 }
 
 async function createReply(collection, id, fields) {
+  const reply = await Reply(collection).create(fields);
   const thread = await Thread(collection).findById(id);
-  thread.replies.push(fields);
+  thread.replies.push(reply._id);
   thread.bumped_on = Date.now();
   await thread.save();
 }

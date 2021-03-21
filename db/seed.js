@@ -1,9 +1,9 @@
 require("dotenv").config();
 
 const { connection, model } = require("./index");
-const { threadSchema } = require("../model");
+const { repliesSchema, threadSchema } = require("../model");
 
-connection.once("open", () => {
+connection.once("open", async () => {
   const testThreads = [];
 
   // Make 11 threads
@@ -16,24 +16,29 @@ connection.once("open", () => {
     });
   }
 
+  const testReplies = [];
+
   // Add 4 replies to first thread
   for (let i = 1; i <= 4; ++i) {
-    testThreads[0].replies.push({
-      _id: `r${i}${testThreads[0]._id}`,
+    const replyId = "r" + i;
+    testReplies.push({
+      _id: replyId,
       text: "reply text",
       delete_password: "reply password",
     });
+    testThreads[0].replies.push(replyId);
   }
 
-  const TestThread = new model("TestThread", threadSchema, "test");
+  const TestThread = new model("TestThread", threadSchema, "testThreads");
+  const TestReply = new model("TestReply", repliesSchema, "testReplies");
 
-  TestThread.insertMany(testThreads, (err) => {
-    if (err) {
-      console.error("[MongoDB]:", err);
-    } else {
-      console.log("[Seed]: success!");
-    }
+  try {
+    await TestReply.insertMany(testReplies);
+    await TestThread.insertMany(testThreads);
+    console.log("[Seed]: success!");
+  } catch (err) {
+    console.error("[MongoDB]:", err);
+  }
 
-    connection.close();
-  });
+  await connection.close();
 });
