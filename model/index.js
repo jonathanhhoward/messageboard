@@ -1,5 +1,5 @@
 const cuid = require("cuid");
-const db = require("./db");
+const db = require("../db");
 
 const repliesSchema = new db.Schema({
   _id: { type: String, default: cuid },
