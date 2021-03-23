@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const { connection, model } = require("./index");
-const { replySchema, threadSchema } = require("../model");
+const { connection } = require("./index");
+const { Reply, Thread } = require("../model");
 const cuid = require("cuid");
 
 connection.once("open", async () => {
@@ -30,12 +30,9 @@ connection.once("open", async () => {
     threads[0].replies.push(replyId);
   }
 
-  const Thread = new model("Thread", threadSchema, "test");
-  const Reply = new model("Reply", replySchema);
-
   try {
     await Reply.insertMany(replies);
-    await Thread.insertMany(threads);
+    await Thread("test").insertMany(threads);
     console.log("[Seed]: success!");
   } catch (err) {
     console.error("[MongoDB]:", err);
