@@ -10,7 +10,7 @@ async function list(collection) {
     .find()
     .sort({ bumped_on: -1 })
     .limit(10)
-    .select("text created_on bumped_on replies")
+    .select("text created_on bumped_on replies replycount")
     .populate({
       path: "replies",
       select: "text created_on",
@@ -22,6 +22,7 @@ async function reply(collection, id, fields) {
   const reply = await Reply.create(fields);
   const thread = await Thread(collection).findById(id);
   thread.replies.push(reply._id);
+  thread.replycount++;
   thread.bumped_on = Date.now();
   await thread.save();
 }
@@ -29,7 +30,7 @@ async function reply(collection, id, fields) {
 async function get(collection, id) {
   return Thread(collection)
     .findById(id)
-    .select("text created_on bumped_on replies")
+    .select("text created_on bumped_on replies replycount")
     .populate({
       path: "replies",
       select: "text created_on",

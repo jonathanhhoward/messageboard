@@ -14,6 +14,7 @@ connection.once("open", async () => {
       text: "thread text",
       delete_password: "thread password",
       replies: [],
+      replycount: 0,
     });
   }
 
@@ -28,6 +29,7 @@ connection.once("open", async () => {
       delete_password: "reply password",
     });
     threads[0].replies.push(replyId);
+    threads[0].replycount++;
   }
 
   try {

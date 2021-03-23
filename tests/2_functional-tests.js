@@ -46,6 +46,7 @@ suite("Functional Tests", function () {
               "created_on",
               "bumped_on",
               "replies",
+              "replycount",
             ]);
             for (let i = 1; i < res.body.length; ++i) {
               assert.isAtMost(
@@ -115,9 +116,11 @@ suite("Functional Tests", function () {
               "created_on",
               "bumped_on",
               "replies",
+              "replycount",
             ]);
 
             assert.isArray(res.body.replies);
+            assert.strictEqual(res.body.replycount, res.body.replies.length);
             if (res.body.replies.length) {
               assert.isAbove(
                 Date.parse(res.body.bumped_on),

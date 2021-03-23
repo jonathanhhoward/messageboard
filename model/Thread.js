@@ -10,6 +10,7 @@ const threadSchema = new db.Schema({
   reported: { type: Boolean, default: false },
   delete_password: { type: String, required: true },
   replies: [{ type: String, ref: "Reply" }],
+  replycount: { type: Number, default: 0 },
 });
 
 module.exports = function (collection) {
