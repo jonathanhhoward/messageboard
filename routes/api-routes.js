@@ -1,14 +1,11 @@
 "use strict";
 
-const api = require("../handlers");
+const { newReply, newThread, thread, recentThreads } = require("../handlers");
 
 const router = require("express").Router();
 
-router
-  .route("/threads/:board")
-  .post(api.addNewThread)
-  .get(api.listRecentThreads);
+router.route("/threads/:board").post(newThread).get(recentThreads);
 
-router.route("/replies/:board").post(api.addNewReply).get(api.getThread);
+router.route("/replies/:board").post(newReply).get(thread);
 
 module.exports = router;
