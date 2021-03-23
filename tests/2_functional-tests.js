@@ -39,13 +39,6 @@ suite("Functional Tests", function () {
 
             assert.isArray(res.body);
             assert.isAtMost(res.body.length, 10);
-            for (let i = 0; i < res.body.length - 1; ++i) {
-              assert.isBelow(
-                Date.parse(res.body[i + 1].bumped_on),
-                Date.parse(res.body[i].bumped_on)
-              );
-            }
-
             assert.isObject(res.body[0]);
             assert.hasAllKeys(res.body[0], [
               "_id",
@@ -54,6 +47,26 @@ suite("Functional Tests", function () {
               "bumped_on",
               "replies",
             ]);
+            for (let i = 1; i < res.body.length; ++i) {
+              assert.isAtMost(
+                Date.parse(res.body[i].bumped_on),
+                Date.parse(res.body[i - 1].bumped_on)
+              );
+            }
+
+            for (const thread of res.body) {
+              if (thread._id === "t1") {
+                assert.isArray(thread.replies);
+                assert.isAtMost(thread.replies.length, 3);
+                assert.isObject(thread.replies[0]);
+                assert.hasAllKeys(thread.replies[0], [
+                  "_id",
+                  "text",
+                  "created_on",
+                ]);
+                break;
+              }
+            }
 
             done();
           });
