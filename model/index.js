@@ -1,7 +1,7 @@
 const cuid = require("cuid");
 const db = require("../db");
 
-const repliesSchema = new db.Schema({
+const replySchema = new db.Schema({
   _id: { type: String, default: cuid },
   text: { type: String, required: true },
   created_on: { type: Date, default: Date.now },
@@ -21,7 +21,7 @@ const threadSchema = new db.Schema({
 });
 
 module.exports = {
-  repliesSchema,
+  replySchema,
   threadSchema,
   create,
   listRecent,
@@ -29,12 +29,10 @@ module.exports = {
   get,
 };
 
-function Reply(collection) {
-  return db.model("Reply", repliesSchema, collection + "Replies");
-}
+const Reply = db.model("Reply", replySchema);
 
 function Thread(collection) {
-  return db.model("Thread", threadSchema, collection + "Threads");
+  return db.model("Thread", threadSchema, collection);
 }
 
 async function create(collection, fields) {
@@ -43,16 +41,19 @@ async function create(collection, fields) {
 
 async function listRecent(collection) {
   return Thread(collection)
-    .find({})
-    .select(
-      "text created_on bumped_on replies._id replies.text replies.created_on"
-    )
+    .find()
     .sort({ bumped_on: -1 })
-    .limit(10);
+    .limit(10)
+    .select("text created_on bumped_on replies")
+    .populate({
+      path: "replies",
+      select: "text created_on",
+      perDocumentLimit: 3,
+    });
 }
 
 async function createReply(collection, id, fields) {
-  const reply = await Reply(collection).create(fields);
+  const reply = await Reply.create(fields);
   const thread = await Thread(collection).findById(id);
   thread.replies.push(reply._id);
   thread.bumped_on = Date.now();
@@ -62,7 +63,9 @@ async function createReply(collection, id, fields) {
 async function get(collection, id) {
   return Thread(collection)
     .findById(id)
-    .select(
-      "text created_on bumped_on replies._id replies.text replies.created_on"
-    );
+    .select("text created_on bumped_on replies")
+    .populate({
+      path: "replies",
+      select: "text created_on",
+    });
 }

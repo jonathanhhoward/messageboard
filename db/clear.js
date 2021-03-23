@@ -2,14 +2,14 @@ require("dotenv").config();
 
 const { connection } = require("./index");
 
-connection.once("open", () => {
-  connection.dropCollection("test", (err) => {
-    if (err) {
-      console.error("[MongoDB]:", err);
-    } else {
-      console.log("[Clear]: success!");
-    }
+connection.once("open", async () => {
+  try {
+    await connection.dropCollection("test");
+    await connection.dropCollection("replies");
+    console.log("[Clear]: success!");
+  } catch (err) {
+    console.error("[MongoDB]:", err);
+  }
 
-    connection.close();
-  });
+  await connection.close();
 });
