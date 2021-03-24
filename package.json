@@ -4,6 +4,7 @@
   "description": "Anonymous message board",
   "main": "server.js",
   "scripts": {
+    "test": "set NODE_ENV=test&& npm start",
     "start": "node server.js",
     "prettify": "prettier --write .",
     "seed": "node db/seed.js",
