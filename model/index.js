@@ -1,11 +1,11 @@
 const Reply = require("./Reply");
 const Thread = require("./Thread");
 
-async function create(collection, fields) {
+async function add(collection, fields) {
   await Thread(collection).create(fields);
 }
 
-async function list(collection) {
+async function listRecent(collection) {
   return Thread(collection)
     .find()
     .sort({ bumped_on: -1 })
@@ -18,7 +18,7 @@ async function list(collection) {
     });
 }
 
-async function reply(collection, id, fields) {
+async function addReply(collection, id, fields) {
   const reply = await Reply.create(fields);
   const thread = await Thread(collection).findById(id);
   thread.replies.push(reply._id);
@@ -40,8 +40,8 @@ async function get(collection, id) {
 module.exports = {
   Reply,
   Thread,
-  create,
-  list,
-  reply,
+  add,
+  listRecent,
+  addReply,
   get,
 };
