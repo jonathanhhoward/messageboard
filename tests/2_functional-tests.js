@@ -73,7 +73,7 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(THREADS_ROUTE)
-          .send({
+          .query({
             thread_id: "t11",
             delete_password: "thread password",
           })
@@ -81,6 +81,22 @@ suite("Functional Tests", function () {
             assert.equal(err, null);
             assert.equal(res.status, 200);
             assert.equal(res.text, "success");
+            done();
+          });
+      });
+
+      test("incorrect password", function (done) {
+        chai
+          .request(server)
+          .delete(THREADS_ROUTE)
+          .query({
+            thread_id: "t10",
+            delete_password: "password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 401);
+            assert.equal(res.text, "incorrect password");
             done();
           });
       });

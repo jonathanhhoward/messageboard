@@ -37,6 +37,15 @@ async function get(collection, id) {
     });
 }
 
+async function remove(collection, id, password) {
+  // todo: implement remove associated replies
+  const thread = await Thread(collection).findById(id);
+  if (!thread) return "invalid id";
+  if (thread.delete_password !== password) return "incorrect password";
+  await thread.remove();
+  return "success";
+}
+
 module.exports = {
   Reply,
   Thread,
@@ -44,4 +53,5 @@ module.exports = {
   listRecent,
   addReply,
   get,
+  remove,
 };

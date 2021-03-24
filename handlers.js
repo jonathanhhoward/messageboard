@@ -24,7 +24,20 @@ async function getThread(req, res) {
 }
 
 async function removeThread(req, res) {
-  res.send("success");
+  const msg = await Thread.remove(
+    req.params.board,
+    req.query.thread_id,
+    req.query.delete_password
+  );
+  switch (msg) {
+    case "success":
+      return res.status(200).send(msg);
+    case "incorrect password":
+      return res.status(401).send(msg);
+    case "invalid id":
+      return res.status(404).send(msg);
+  }
+  res.status(500).end();
 }
 
 module.exports = {
