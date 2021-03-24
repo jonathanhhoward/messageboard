@@ -23,9 +23,14 @@ async function getThread(req, res) {
   res.json(thread);
 }
 
+async function removeThread(req, res) {
+  res.send("success");
+}
+
 module.exports = {
   addThread,
   listRecentThreads,
   addReplyToThread,
   getThread,
+  removeThread,
 };
