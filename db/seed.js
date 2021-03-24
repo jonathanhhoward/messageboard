@@ -1,9 +1,6 @@
-require("dotenv").config();
-
-const { connection } = require("./index");
 const Thread = require("../model");
 
-connection.once("open", async () => {
+module.exports = async function () {
   try {
     // Add 11 threads
     for (let i = 1; i <= 11; ++i) {
@@ -26,6 +23,4 @@ connection.once("open", async () => {
   } catch (err) {
     console.error("[MongoDB]:", err);
   }
-
-  await connection.close();
-});
+};

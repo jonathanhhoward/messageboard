@@ -1,8 +1,6 @@
-require("dotenv").config();
-
 const { connection } = require("./index");
 
-connection.once("open", async () => {
+module.exports = async function () {
   try {
     await connection.dropCollection("test");
     await connection.dropCollection("replies");
@@ -10,6 +8,4 @@ connection.once("open", async () => {
   } catch (err) {
     console.error("[MongoDB]:", err);
   }
-
-  await connection.close();
-});
+};

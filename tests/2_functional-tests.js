@@ -1,6 +1,8 @@
 const chaiHttp = require("chai-http");
 const chai = require("chai");
 const server = require("../server");
+const seed = require("../db/seed");
+const clear = require("../db/clear");
 
 const assert = chai.assert;
 chai.use(chaiHttp);
@@ -9,6 +11,14 @@ const THREADS_ROUTE = "/api/threads/test";
 const REPLIES_ROUTE = "/api/replies/test";
 
 suite("Functional Tests", function () {
+  before(async function () {
+    await seed();
+  });
+
+  after(async function () {
+    await clear();
+  });
+
   suite("API ROUTING FOR /api/threads/:board", function () {
     suite("POST", function () {
       test("add a new thread", function (done) {
