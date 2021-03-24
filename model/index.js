@@ -21,10 +21,12 @@ async function listRecent(collection) {
 async function addReply(collection, id, fields) {
   const reply = await Reply.create(fields);
   const thread = await Thread(collection).findById(id);
+  if (!thread) return null;
   thread.replies.push(reply._id);
   thread.replycount++;
   thread.bumped_on = Date.now();
   await thread.save();
+  return thread;
 }
 
 async function get(collection, id) {
@@ -40,7 +42,7 @@ async function get(collection, id) {
 async function remove(collection, id, password) {
   // todo: implement remove associated replies
   const thread = await Thread(collection).findById(id);
-  if (!thread) return "invalid id";
+  if (!thread) return "thread not found";
   if (thread.delete_password !== password) return "incorrect password";
   await thread.remove();
   return "success";
