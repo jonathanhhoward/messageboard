@@ -43,7 +43,6 @@ async function removeThread(req, res) {
     case "thread not found":
       return notFound(res);
   }
-  res.status(500).end();
 }
 
 module.exports = {
