@@ -110,6 +110,22 @@ suite("Functional Tests", function () {
             done();
           });
       });
+
+      test("thread does not exist", function (done) {
+        chai
+          .request(server)
+          .delete(THREADS_ROUTE)
+          .query({
+            thread_id: "t0",
+            delete_password: "password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "thread not found");
+            done();
+          });
+      });
     });
 
     suite("PUT", function () {});
@@ -130,6 +146,24 @@ suite("Functional Tests", function () {
           .end(function (err, res) {
             assert.equal(err, null);
             assert.match(res.redirects[0], /\/b\/test\/t1/);
+            done();
+          });
+      });
+
+      test("thread does not exist", function (done) {
+        chai
+          .request(server)
+          .post(REPLIES_ROUTE)
+          .type("form")
+          .send({
+            thread_id: "t0",
+            text: "reply text",
+            delete_password: "reply password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "thread not found");
             done();
           });
       });
@@ -165,6 +199,19 @@ suite("Functional Tests", function () {
               assert.isObject(reply);
               assert.hasAllKeys(reply, ["_id", "text", "created_on"]);
             });
+            done();
+          });
+      });
+
+      test("thread does not exist", function (done) {
+        chai
+          .request(server)
+          .get(REPLIES_ROUTE)
+          .query({ thread_id: "t0" })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "thread not found");
             done();
           });
       });
