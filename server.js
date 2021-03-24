@@ -10,6 +10,7 @@ const helmet = require("helmet");
 const apiRoutes = require("./routes/api-routes.js");
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner");
+const db = require("./db");
 
 const app = express();
 
@@ -47,20 +48,21 @@ app.use("/api", apiRoutes);
 app.use((req, res, next) => res.status(404).send("Not Found"));
 
 //Start our server and tests!
-const port = process.env.PORT || 3000;
-app.listen(port, function () {
-  console.log("Listening on port", port);
-  if (process.env.NODE_ENV === "test") {
-    console.log("Running Tests...");
-    setTimeout(function () {
-      try {
-        runner.run();
-      } catch (error) {
-        console.log("Tests are not valid:");
-        console.log(error);
-      }
-    }, 1500);
-  }
+const server = app.listen(process.env.PORT, () => {
+  console.log("Listening on port", server.address().port);
+  db.connection.once("open", () => {
+    if (process.env.NODE_ENV === "test") {
+      console.log("Running Tests...");
+      setTimeout(function () {
+        try {
+          runner.run();
+        } catch (error) {
+          console.log("Tests are not valid:");
+          console.log(error);
+        }
+      }, 1500);
+    }
+  });
 });
 
 module.exports = app; //for testing
