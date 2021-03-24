@@ -36,39 +36,33 @@ suite("Functional Tests", function () {
           .end(function (err, res) {
             assert.equal(err, null);
             assert.equal(res.status, 200);
-
             assert.isArray(res.body);
             assert.isAtMost(res.body.length, 10);
-            assert.isObject(res.body[0]);
-            assert.hasAllKeys(res.body[0], [
-              "_id",
-              "text",
-              "created_on",
-              "bumped_on",
-              "replies",
-              "replycount",
-            ]);
-            for (let i = 1; i < res.body.length; ++i) {
-              assert.isAtMost(
-                Date.parse(res.body[i].bumped_on),
-                Date.parse(res.body[i - 1].bumped_on)
-              );
-            }
-
-            for (const thread of res.body) {
+            res.body.forEach((thread, i, threads) => {
+              assert.isObject(thread);
+              assert.hasAllKeys(thread, [
+                "_id",
+                "text",
+                "created_on",
+                "bumped_on",
+                "replies",
+                "replycount",
+              ]);
+              if (i > 1) {
+                assert.isAtMost(
+                  Date.parse(threads[i].bumped_on),
+                  Date.parse(threads[i - 1].bumped_on)
+                );
+              }
               if (thread._id === "t1") {
                 assert.isArray(thread.replies);
                 assert.isAtMost(thread.replies.length, 3);
-                assert.isObject(thread.replies[0]);
-                assert.hasAllKeys(thread.replies[0], [
-                  "_id",
-                  "text",
-                  "created_on",
-                ]);
-                break;
+                thread.replies.forEach((reply) => {
+                  assert.isObject(reply);
+                  assert.hasAllKeys(reply, ["_id", "text", "created_on"]);
+                });
               }
-            }
-
+            });
             done();
           });
       });
@@ -108,7 +102,6 @@ suite("Functional Tests", function () {
           .end(function (err, res) {
             assert.equal(err, null);
             assert.equal(res.status, 200);
-
             assert.isObject(res.body);
             assert.hasAllKeys(res.body, [
               "_id",
@@ -118,7 +111,6 @@ suite("Functional Tests", function () {
               "replies",
               "replycount",
             ]);
-
             assert.isArray(res.body.replies);
             assert.strictEqual(res.body.replycount, res.body.replies.length);
             if (res.body.replies.length) {
@@ -127,13 +119,14 @@ suite("Functional Tests", function () {
                 Date.parse(res.body.created_on)
               );
             }
-
-            assert.isObject(res.body.replies[0]);
-            assert.hasAllKeys(res.body.replies[0], [
-              "_id",
-              "text",
-              "created_on",
-            ]);
+            res.body.replies.forEach((reply) => {
+              assert.isObject(reply);
+              assert.hasAllKeys(reply, [
+                "_id",
+                "text",
+                "created_on",
+              ]);
+            });
             done();
           });
       });
