@@ -68,7 +68,22 @@ suite("Functional Tests", function () {
       });
     });
 
-    suite("DELETE", function () {});
+    suite("DELETE", function () {
+      test("delete a thread", function (done) {
+        chai
+          .request(server)
+          .delete(THREADS_ROUTE)
+          .send({
+            thread_id: "t11",
+            delete_password: "thread password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 200);
+            done();
+          });
+      });
+    });
 
     suite("PUT", function () {});
   });
@@ -112,7 +127,7 @@ suite("Functional Tests", function () {
               "replycount",
             ]);
             assert.isArray(res.body.replies);
-            assert.strictEqual(res.body.replycount, res.body.replies.length);
+            assert.equal(res.body.replycount, res.body.replies.length);
             if (res.body.replies.length) {
               assert.isAbove(
                 Date.parse(res.body.bumped_on),
@@ -121,11 +136,7 @@ suite("Functional Tests", function () {
             }
             res.body.replies.forEach((reply) => {
               assert.isObject(reply);
-              assert.hasAllKeys(reply, [
-                "_id",
-                "text",
-                "created_on",
-              ]);
+              assert.hasAllKeys(reply, ["_id", "text", "created_on"]);
             });
             done();
           });
