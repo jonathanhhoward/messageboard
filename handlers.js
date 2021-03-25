@@ -74,6 +74,10 @@ async function reportThread(req, res) {
   }
 }
 
+async function reportReplyOnThread(req, res) {
+  res.send("success");
+}
+
 module.exports = {
   addThread,
   listRecentThreads,
@@ -82,4 +86,5 @@ module.exports = {
   removeThread,
   removeReplyFromThread,
   reportThread,
+  reportReplyOnThread,
 };

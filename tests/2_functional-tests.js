@@ -244,7 +244,21 @@ suite("Functional Tests", function () {
     });
 
     suite("PUT", function () {
-      test("report reply on thread");
+      test("report reply on thread", function (done) {
+        chai
+          .request(server)
+          .put(REPLIES_ROUTE)
+          .query({
+            thread_id: "t1",
+            reply_id: "r1",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 200);
+            assert.equal(res.text, "success");
+            done();
+          });
+      });
     });
 
     suite("DELETE", function () {
