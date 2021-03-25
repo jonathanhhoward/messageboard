@@ -21,7 +21,7 @@ suite("Functional Tests", function () {
 
   suite("API ROUTING FOR /api/threads/:board", function () {
     suite("POST", function () {
-      test("add a new thread", function (done) {
+      test("create thread", function (done) {
         chai
           .request(server)
           .post(THREADS_ROUTE)
@@ -79,7 +79,7 @@ suite("Functional Tests", function () {
     });
 
     suite("DELETE", function () {
-      test("delete a thread", function (done) {
+      test("delete thread with password", function (done) {
         chai
           .request(server)
           .delete(THREADS_ROUTE)
@@ -128,12 +128,14 @@ suite("Functional Tests", function () {
       });
     });
 
-    suite("PUT", function () {});
+    suite("PUT", function () {
+      test("report thread");
+    });
   });
 
   suite("API ROUTING FOR /api/replies/:board", function () {
     suite("POST", function () {
-      test("add a new reply", function (done) {
+      test("create reply on thread", function (done) {
         chai
           .request(server)
           .post(REPLIES_ROUTE)
@@ -170,7 +172,7 @@ suite("Functional Tests", function () {
     });
 
     suite("GET", function () {
-      test("get a thread", function (done) {
+      test("show all replies on thread", function (done) {
         chai
           .request(server)
           .get(REPLIES_ROUTE)
@@ -217,10 +219,12 @@ suite("Functional Tests", function () {
       });
     });
 
-    suite("PUT", function () {});
+    suite("PUT", function () {
+      test("report reply on thread");
+    });
 
     suite("DELETE", function () {
-      test("delete a post", function (done) {
+      test("change reply to '[deleted]' on thread", function (done) {
         chai
           .request(server)
           .delete(REPLIES_ROUTE)
