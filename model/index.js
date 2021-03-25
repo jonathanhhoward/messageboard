@@ -50,6 +50,14 @@ async function remove(collection, id, password) {
   return "success";
 }
 
+async function removeReply(collection, threadId, replyId, password) {
+  const reply = await Reply.findById(replyId);
+  if (reply.delete_password !== password) return "incorrect password";
+  reply.text = "[deleted]";
+  await reply.save();
+  return "success";
+}
+
 module.exports = {
   Reply,
   Thread,
@@ -58,4 +66,5 @@ module.exports = {
   addReply,
   get,
   remove,
+  removeReply,
 };

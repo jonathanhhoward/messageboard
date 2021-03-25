@@ -46,7 +46,18 @@ async function removeThread(req, res) {
 }
 
 async function removeReplyFromThread(req, res) {
-  res.send("success");
+  const msg = await Thread.removeReply(
+    req.params.board,
+    req.query.thread_id,
+    req.query.reply_id,
+    req.query.delete_password
+  );
+  switch (msg) {
+    case "success":
+      return res.status(200).send(msg);
+    case "incorrect password":
+      return res.status(401).send(msg);
+  }
 }
 
 module.exports = {

@@ -16,7 +16,7 @@ suite("Functional Tests", function () {
   });
 
   after(async function () {
-    await clear();
+    // await clear();
   });
 
   suite("API ROUTING FOR /api/threads/:board", function () {
@@ -233,6 +233,23 @@ suite("Functional Tests", function () {
             assert.equal(err, null);
             assert.equal(res.status, 200);
             assert.equal(res.text, "success");
+            done();
+          });
+      });
+
+      test("incorrect password", function (done) {
+        chai
+          .request(server)
+          .delete(REPLIES_ROUTE)
+          .query({
+            thread_id: "t1",
+            reply_id: "r1",
+            delete_password: "password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 401);
+            assert.equal(res.text, "incorrect password");
             done();
           });
       });
