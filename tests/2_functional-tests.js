@@ -219,6 +219,23 @@ suite("Functional Tests", function () {
 
     suite("PUT", function () {});
 
-    suite("DELETE", function () {});
+    suite("DELETE", function () {
+      test("delete a post", function (done) {
+        chai
+          .request(server)
+          .delete(REPLIES_ROUTE)
+          .query({
+            thread_id: "t1",
+            reply_id: "r1",
+            delete_password: "reply password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 200);
+            assert.equal(res.text, "success");
+            done();
+          });
+      });
+    });
   });
 });

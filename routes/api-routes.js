@@ -6,6 +6,7 @@ const {
   getThread,
   listRecentThreads,
   removeThread,
+  removeReplyFromThread,
 } = require("../handlers");
 
 const router = require("express").Router();
@@ -16,6 +17,10 @@ router
   .get(listRecentThreads)
   .delete(removeThread);
 
-router.route("/replies/:board").post(addReplyToThread).get(getThread);
+router
+  .route("/replies/:board")
+  .post(addReplyToThread)
+  .get(getThread)
+  .delete(removeReplyFromThread);
 
 module.exports = router;

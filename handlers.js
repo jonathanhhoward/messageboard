@@ -45,10 +45,15 @@ async function removeThread(req, res) {
   }
 }
 
+async function removeReplyFromThread(req, res) {
+  res.send("success");
+}
+
 module.exports = {
   addThread,
   listRecentThreads,
   addReplyToThread,
   getThread,
   removeThread,
+  removeReplyFromThread,
 };
