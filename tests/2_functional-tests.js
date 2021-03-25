@@ -270,6 +270,23 @@ suite("Functional Tests", function () {
             done();
           });
       });
+
+      test("reply does not exist", function (done) {
+        chai
+          .request(server)
+          .delete(REPLIES_ROUTE)
+          .query({
+            thread_id: "t1",
+            reply_id: "r0",
+            delete_password: "reply password",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "reply not found");
+            done();
+          });
+      });
     });
   });
 });

@@ -59,6 +59,8 @@ async function removeReplyFromThread(req, res) {
       return res.status(401).send(msg);
     case "thread not found":
       return notFound(res);
+    case "reply not found":
+      return notFound(res, msg);
   }
 }
 
