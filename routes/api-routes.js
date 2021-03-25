@@ -7,6 +7,7 @@ const {
   listRecentThreads,
   removeThread,
   removeReplyFromThread,
+  reportThread,
 } = require("../handlers");
 
 const router = require("express").Router();
@@ -15,6 +16,7 @@ router
   .route("/threads/:board")
   .post(addThread)
   .get(listRecentThreads)
+  .put(reportThread)
   .delete(removeThread);
 
 router

@@ -64,6 +64,10 @@ async function removeReplyFromThread(req, res) {
   }
 }
 
+async function reportThread(req, res) {
+  res.end("success");
+}
+
 module.exports = {
   addThread,
   listRecentThreads,
@@ -71,4 +75,5 @@ module.exports = {
   getThread,
   removeThread,
   removeReplyFromThread,
+  reportThread,
 };

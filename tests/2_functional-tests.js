@@ -78,6 +78,21 @@ suite("Functional Tests", function () {
       });
     });
 
+    suite("PUT", function () {
+      test("report thread", function (done) {
+        chai
+          .request(server)
+          .put(THREADS_ROUTE)
+          .query({ thread_id: "t1" })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 200);
+            assert.equal(res.text, "success");
+            done();
+          });
+      });
+    });
+
     suite("DELETE", function () {
       test("delete thread with password", function (done) {
         chai
@@ -126,10 +141,6 @@ suite("Functional Tests", function () {
             done();
           });
       });
-    });
-
-    suite("PUT", function () {
-      test("report thread");
     });
   });
 
