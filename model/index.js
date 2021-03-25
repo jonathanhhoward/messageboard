@@ -51,6 +51,8 @@ async function remove(collection, id, password) {
 }
 
 async function removeReply(collection, threadId, replyId, password) {
+  const thread = await Thread(collection).findById(threadId);
+  if (!thread) return "thread not found";
   const reply = await Reply.findById(replyId);
   if (reply.delete_password !== password) return "incorrect password";
   reply.text = "[deleted]";

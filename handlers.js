@@ -57,6 +57,8 @@ async function removeReplyFromThread(req, res) {
       return res.status(200).send(msg);
     case "incorrect password":
       return res.status(401).send(msg);
+    case "thread not found":
+      return notFound(res);
   }
 }
 
