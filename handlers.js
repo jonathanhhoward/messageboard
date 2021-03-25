@@ -1,6 +1,6 @@
 const Thread = require("./model");
 
-function notFound(res, msg = "thread not found") {
+function notFound(res, msg) {
   res.status(404).send(msg);
 }
 
@@ -19,13 +19,13 @@ async function addReplyToThread(req, res) {
   const { thread_id, text, delete_password } = req.body;
   const fields = { text, delete_password };
   const thread = await Thread.addReply(board, thread_id, fields);
-  if (!thread) return notFound(res);
+  if (!thread) return notFound(res, "thread not found");
   res.redirect(`/b/${board}/${thread_id}`);
 }
 
 async function getThread(req, res) {
   const thread = await Thread.get(req.params.board, req.query.thread_id);
-  if (!thread) return notFound(res);
+  if (!thread) return notFound(res, "thread not found");
   res.json(thread);
 }
 
@@ -41,7 +41,7 @@ async function removeThread(req, res) {
     case "incorrect password":
       return res.status(401).send(msg);
     case "thread not found":
-      return notFound(res);
+      return notFound(res, msg);
   }
 }
 
@@ -58,7 +58,7 @@ async function removeReplyFromThread(req, res) {
     case "incorrect password":
       return res.status(401).send(msg);
     case "thread not found":
-      return notFound(res);
+      return notFound(res, msg);
     case "reply not found":
       return notFound(res, msg);
   }
