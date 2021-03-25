@@ -65,7 +65,13 @@ async function removeReplyFromThread(req, res) {
 }
 
 async function reportThread(req, res) {
-  res.end("success");
+  const msg = await Thread.report(req.params.board, req.query.thread_id);
+  switch (msg) {
+    case "success":
+      return res.status(200).send(msg);
+    case "thread not found":
+      return notFound(res, msg);
+  }
 }
 
 module.exports = {

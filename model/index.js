@@ -61,6 +61,14 @@ async function removeReply(collection, threadId, replyId, password) {
   return "success";
 }
 
+async function report(collection, id) {
+  const thread = await Thread(collection).findById(id);
+  if (!thread) return "thread not found";
+  thread.reported = true;
+  await thread.save();
+  return "success";
+}
+
 module.exports = {
   Reply,
   Thread,
@@ -70,4 +78,5 @@ module.exports = {
   get,
   remove,
   removeReply,
+  report,
 };

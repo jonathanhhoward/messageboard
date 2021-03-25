@@ -91,6 +91,19 @@ suite("Functional Tests", function () {
             done();
           });
       });
+
+      test("thread does not exist", function (done) {
+        chai
+          .request(server)
+          .put(THREADS_ROUTE)
+          .query({ thread_id: "t0" })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "thread not found");
+            done();
+          });
+      });
     });
 
     suite("DELETE", function () {
