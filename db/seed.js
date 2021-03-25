@@ -12,8 +12,9 @@ module.exports = async function () {
     }
 
     // Add 4 replies to first thread
-    for (let i = 0; i < 4; ++i) {
+    for (let i = 1; i <= 4; ++i) {
       await Thread.addReply("test", "t1", {
+        _id: "r" + i,
         text: "reply text",
         delete_password: "reply password",
       });
