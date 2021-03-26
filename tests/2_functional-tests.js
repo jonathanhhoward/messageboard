@@ -282,6 +282,23 @@ suite("Functional Tests", function () {
             done();
           });
       });
+
+      test("reply does not exist", function (done) {
+        chai
+          .request(server)
+          .put(REPLIES_ROUTE)
+          .type("form")
+          .send({
+            thread_id: "t1",
+            reply_id: "r0",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "reply not found");
+            done();
+          });
+      });
     });
 
     suite("DELETE", function () {

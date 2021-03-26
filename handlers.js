@@ -84,6 +84,7 @@ async function reportReplyOnThread(req, res) {
     case "success":
       return res.status(200).send(msg);
     case "thread not found":
+    case "reply not found":
       return notFound(res, msg);
   }
 }

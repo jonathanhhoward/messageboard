@@ -73,6 +73,7 @@ async function reportReply(collection, threadId, replyId) {
   const thread = await Thread(collection).findById(threadId);
   if (!thread) return "thread not found";
   const reply = await Reply.findById(replyId);
+  if (!reply) return "reply not found";
   reply.reported = true;
   await reply.save();
   return "success";
