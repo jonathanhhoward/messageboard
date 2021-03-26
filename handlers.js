@@ -36,13 +36,12 @@ async function removeThread(req, res) {
     req.body.delete_password
   );
   switch (msg) {
-    case "success":
-      return res.status(200).send(msg);
     case "incorrect password":
       return res.status(401).send(msg);
     case "thread not found":
       return notFound(res, msg);
   }
+  res.send(msg);
 }
 
 async function removeReplyFromThread(req, res) {
@@ -53,25 +52,22 @@ async function removeReplyFromThread(req, res) {
     req.body.delete_password
   );
   switch (msg) {
-    case "success":
-      return res.status(200).send(msg);
     case "incorrect password":
       return res.status(401).send(msg);
     case "thread not found":
-      return notFound(res, msg);
     case "reply not found":
       return notFound(res, msg);
   }
+  res.send(msg);
 }
 
 async function reportThread(req, res) {
   const msg = await Thread.report(req.params.board, req.body.thread_id);
   switch (msg) {
-    case "success":
-      return res.status(200).send(msg);
     case "thread not found":
       return notFound(res, msg);
   }
+  res.send(msg);
 }
 
 async function reportReplyOnThread(req, res) {
@@ -81,12 +77,11 @@ async function reportReplyOnThread(req, res) {
     req.body.reply_id
   );
   switch (msg) {
-    case "success":
-      return res.status(200).send(msg);
     case "thread not found":
     case "reply not found":
       return notFound(res, msg);
   }
+  res.send(msg);
 }
 
 module.exports = {
