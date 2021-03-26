@@ -75,7 +75,17 @@ async function reportThread(req, res) {
 }
 
 async function reportReplyOnThread(req, res) {
-  res.send("success");
+  const msg = await Thread.reportReply(
+    req.params.board,
+    req.body.thread_id,
+    req.body.reply_id
+  );
+  switch (msg) {
+    case "success":
+      return res.status(200).send(msg);
+    case "thread not found":
+      return notFound(res, msg);
+  }
 }
 
 module.exports = {

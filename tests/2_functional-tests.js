@@ -265,6 +265,23 @@ suite("Functional Tests", function () {
             done();
           });
       });
+
+      test("thread does not exist", function (done) {
+        chai
+          .request(server)
+          .put(REPLIES_ROUTE)
+          .type("form")
+          .send({
+            thread_id: "t0",
+            reply_id: "r1",
+          })
+          .end(function (err, res) {
+            assert.equal(err, null);
+            assert.equal(res.status, 404);
+            assert.equal(res.text, "thread not found");
+            done();
+          });
+      });
     });
 
     suite("DELETE", function () {
