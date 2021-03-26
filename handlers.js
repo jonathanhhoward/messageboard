@@ -32,8 +32,8 @@ async function getThread(req, res) {
 async function removeThread(req, res) {
   const msg = await Thread.remove(
     req.params.board,
-    req.query.thread_id,
-    req.query.delete_password
+    req.body.thread_id,
+    req.body.delete_password
   );
   switch (msg) {
     case "success":
@@ -48,9 +48,9 @@ async function removeThread(req, res) {
 async function removeReplyFromThread(req, res) {
   const msg = await Thread.removeReply(
     req.params.board,
-    req.query.thread_id,
-    req.query.reply_id,
-    req.query.delete_password
+    req.body.thread_id,
+    req.body.reply_id,
+    req.body.delete_password
   );
   switch (msg) {
     case "success":
@@ -65,7 +65,7 @@ async function removeReplyFromThread(req, res) {
 }
 
 async function reportThread(req, res) {
-  const msg = await Thread.report(req.params.board, req.query.thread_id);
+  const msg = await Thread.report(req.params.board, req.body.thread_id);
   switch (msg) {
     case "success":
       return res.status(200).send(msg);

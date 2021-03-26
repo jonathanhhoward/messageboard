@@ -83,7 +83,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .put(THREADS_ROUTE)
-          .query({ thread_id: "t1" })
+          .type("form")
+          .send({ thread_id: "t1" })
           .end(function (err, res) {
             assert.equal(err, null);
             assert.equal(res.status, 200);
@@ -96,7 +97,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .put(THREADS_ROUTE)
-          .query({ thread_id: "t0" })
+          .type("form")
+          .send({ thread_id: "t0" })
           .end(function (err, res) {
             assert.equal(err, null);
             assert.equal(res.status, 404);
@@ -111,7 +113,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(THREADS_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t11",
             delete_password: "thread password",
           })
@@ -127,7 +130,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(THREADS_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t10",
             delete_password: "password",
           })
@@ -143,7 +147,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(THREADS_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t0",
             delete_password: "password",
           })
@@ -248,7 +253,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .put(REPLIES_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t1",
             reply_id: "r1",
           })
@@ -266,7 +272,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(REPLIES_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t1",
             reply_id: "r1",
             delete_password: "reply password",
@@ -283,7 +290,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(REPLIES_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t1",
             reply_id: "r1",
             delete_password: "password",
@@ -300,7 +308,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(REPLIES_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t0",
             reply_id: "r1",
             delete_password: "reply password",
@@ -317,7 +326,8 @@ suite("Functional Tests", function () {
         chai
           .request(server)
           .delete(REPLIES_ROUTE)
-          .query({
+          .type("form")
+          .send({
             thread_id: "t1",
             reply_id: "r0",
             delete_password: "reply password",
