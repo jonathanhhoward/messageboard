@@ -1,10 +1,6 @@
 const Reply = require("./Reply");
 const Thread = require("./Thread");
 
-async function add(collection, fields) {
-  await Thread(collection).create(fields);
-}
-
 async function listRecent(collection) {
   return Thread(collection)
     .find()
@@ -18,15 +14,8 @@ async function listRecent(collection) {
     });
 }
 
-async function addReply(collection, id, fields) {
-  const thread = await Thread(collection).findById(id);
-  if (!thread) return null;
-  const reply = await Reply.create(fields);
-  thread.replies.push(reply._id);
-  thread.replycount++;
-  thread.bumped_on = Date.now();
-  await thread.save();
-  return thread;
+async function add(collection, fields) {
+  await Thread(collection).create(fields);
 }
 
 async function get(collection, id) {
@@ -50,6 +39,25 @@ async function remove(collection, id, password) {
   return "success";
 }
 
+async function report(collection, id) {
+  const thread = await Thread(collection).findById(id);
+  if (!thread) return "thread not found";
+  thread.reported = true;
+  await thread.save();
+  return "success";
+}
+
+async function addReply(collection, id, fields) {
+  const thread = await Thread(collection).findById(id);
+  if (!thread) return null;
+  const reply = await Reply.create(fields);
+  thread.replies.push(reply._id);
+  thread.replycount++;
+  thread.bumped_on = Date.now();
+  await thread.save();
+  return thread;
+}
+
 async function removeReply(collection, threadId, replyId, password) {
   const thread = await Thread(collection).findById(threadId);
   if (!thread) return "thread not found";
@@ -58,14 +66,6 @@ async function removeReply(collection, threadId, replyId, password) {
   if (reply.delete_password !== password) return "incorrect password";
   reply.text = "[deleted]";
   await reply.save();
-  return "success";
-}
-
-async function report(collection, id) {
-  const thread = await Thread(collection).findById(id);
-  if (!thread) return "thread not found";
-  thread.reported = true;
-  await thread.save();
   return "success";
 }
 
@@ -80,14 +80,14 @@ async function reportReply(collection, threadId, replyId) {
 }
 
 module.exports = {
-  Reply,
   Thread,
-  add,
   listRecent,
-  addReply,
+  add,
   get,
   remove,
-  removeReply,
   report,
+  Reply,
+  addReply,
+  removeReply,
   reportReply,
 };

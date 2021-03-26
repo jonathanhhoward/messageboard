@@ -14,6 +14,30 @@ async function listRecentThreads(req, res) {
   res.json(threads);
 }
 
+async function reportThread(req, res) {
+  const msg = await Thread.report(req.params.board, req.body.thread_id);
+  switch (msg) {
+    case "thread not found":
+      return notFound(res, msg);
+  }
+  res.send(msg);
+}
+
+async function removeThread(req, res) {
+  const msg = await Thread.remove(
+    req.params.board,
+    req.body.thread_id,
+    req.body.delete_password
+  );
+  switch (msg) {
+    case "incorrect password":
+      return res.status(401).send(msg);
+    case "thread not found":
+      return notFound(res, msg);
+  }
+  res.send(msg);
+}
+
 async function addReplyToThread(req, res) {
   const board = req.params.board;
   const { thread_id, text, delete_password } = req.body;
@@ -29,16 +53,15 @@ async function getThread(req, res) {
   res.json(thread);
 }
 
-async function removeThread(req, res) {
-  const msg = await Thread.remove(
+async function reportReplyOnThread(req, res) {
+  const msg = await Thread.reportReply(
     req.params.board,
     req.body.thread_id,
-    req.body.delete_password
+    req.body.reply_id
   );
   switch (msg) {
-    case "incorrect password":
-      return res.status(401).send(msg);
     case "thread not found":
+    case "reply not found":
       return notFound(res, msg);
   }
   res.send(msg);
@@ -61,36 +84,13 @@ async function removeReplyFromThread(req, res) {
   res.send(msg);
 }
 
-async function reportThread(req, res) {
-  const msg = await Thread.report(req.params.board, req.body.thread_id);
-  switch (msg) {
-    case "thread not found":
-      return notFound(res, msg);
-  }
-  res.send(msg);
-}
-
-async function reportReplyOnThread(req, res) {
-  const msg = await Thread.reportReply(
-    req.params.board,
-    req.body.thread_id,
-    req.body.reply_id
-  );
-  switch (msg) {
-    case "thread not found":
-    case "reply not found":
-      return notFound(res, msg);
-  }
-  res.send(msg);
-}
-
 module.exports = {
   addThread,
   listRecentThreads,
+  reportThread,
+  removeThread,
   addReplyToThread,
   getThread,
-  removeThread,
-  removeReplyFromThread,
-  reportThread,
   reportReplyOnThread,
+  removeReplyFromThread,
 };
