@@ -34,9 +34,7 @@ app.get("/b/:board/:threadid", (req, res) =>
 );
 
 //Index page (static HTML)
-app.get("/", (req, res) => {
-  res.sendFile(process.cwd() + "/views/index.html");
-});
+app.get("/", (req, res) => res.sendFile(process.cwd() + "/views/index.html"));
 
 //For FCC testing purposes
 fccTestingRoutes(app);
