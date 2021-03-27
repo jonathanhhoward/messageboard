@@ -1,7 +1,7 @@
 {
   "name": "messageboard",
   "version": "0.1.0",
-  "description": "Anonymous message board",
+  "description": "An Information Security project for freeCodeCamp",
   "main": "server.js",
   "scripts": {
     "test": "set NODE_ENV=test&& npm start",
@@ -19,6 +19,9 @@
     "helmet": "^4.4.1",
     "mocha": "^8.3.1",
     "mongoose": "^5.12.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   },
   "engines": {
     "node": "14.15.5"
@@ -40,8 +43,5 @@
   "bugs": {
     "url": "https://github.com/jonathanhhoward/messageboard/issues"
   },
-  "homepage": "https://github.com/jonathanhhoward/messageboard#readme",
-  "devDependencies": {
-    "prettier": "^2.2.1"
-  }
+  "homepage": "https://jhhoward-messageboard.glitch.me/"
 }
