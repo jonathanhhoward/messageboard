@@ -64,14 +64,12 @@ suite("Functional Tests", function () {
                   Date.parse(threads[i - 1].bumped_on)
                 );
               }
-              if (thread.replies.length) {
-                assert.isArray(thread.replies);
-                assert.isAtMost(thread.replies.length, 3);
-                thread.replies.forEach((reply) => {
-                  assert.isObject(reply);
-                  assert.hasAllKeys(reply, ["_id", "text", "created_on"]);
-                });
-              }
+              assert.isArray(thread.replies);
+              assert.isAtMost(thread.replies.length, 3);
+              thread.replies.forEach((reply) => {
+                assert.isObject(reply);
+                assert.hasAllKeys(reply, ["_id", "text", "created_on"]);
+              });
             });
             done();
           });
