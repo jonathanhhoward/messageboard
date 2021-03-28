@@ -58,13 +58,13 @@ suite("Functional Tests", function () {
                 "replies",
                 "replycount",
               ]);
-              if (i > 1) {
+              if (i > 0) {
                 assert.isAtMost(
                   Date.parse(threads[i].bumped_on),
                   Date.parse(threads[i - 1].bumped_on)
                 );
               }
-              if (thread._id === "t1") {
+              if (thread.replies.length) {
                 assert.isArray(thread.replies);
                 assert.isAtMost(thread.replies.length, 3);
                 thread.replies.forEach((reply) => {
