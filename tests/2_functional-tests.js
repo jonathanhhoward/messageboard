@@ -176,7 +176,7 @@ suite("Functional Tests", function () {
           })
           .end(function (err, res) {
             assert.equal(err, null);
-            assert.match(res.redirects[0], /\/b\/test\/t1/);
+            assert.match(res.redirects[0], /\/b\/test\/t1$/);
             done();
           });
       });
