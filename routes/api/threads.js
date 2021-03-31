@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const router = require("express-promise-router")();
 const Thread = require("../../model");
 const { notFound } = require("./utils");
 
