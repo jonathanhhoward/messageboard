@@ -7,8 +7,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const apiRoutes = require("./routes/api-routes.js");
-const fccTestingRoutes = require("./routes/fcctesting.js");
+const apiRoutes = require("./routes/api");
+const fccTestingRoutes = require("./routes/fcctesting");
 const runner = require("./test-runner");
 const db = require("./db");
 
@@ -40,7 +40,7 @@ app.get("/", (req, res) => res.sendFile(process.cwd() + "/views/index.html"));
 fccTestingRoutes(app);
 
 //Routing for API
-app.use("/api", apiRoutes);
+apiRoutes(app);
 
 //404 Not Found Middleware
 app.use((req, res, next) => res.status(404).send("Not Found"));
